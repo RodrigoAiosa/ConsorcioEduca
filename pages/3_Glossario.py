@@ -4,8 +4,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import streamlit as st
 from utils.glossario import GLOSSARIO
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(page_title="Glossário", page_icon="📚", layout="wide")
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 st.title("📚 Glossário de Consórcios")
 st.write("Os termos que toda administradora usa — explicados sem economês.")
 

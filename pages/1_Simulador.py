@@ -10,8 +10,10 @@ from utils.calculos import (
     ParametrosReajuste, fluxo_mensal_consorcio_com_reajuste,
 )
 from utils.pdf_export import gerar_pdf_simulacao
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(page_title="Simulador de Consórcio", page_icon="📊", layout="wide")
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 st.title("📊 Simulador de Consórcio")
 st.write("Preencha os dados do plano para estimar parcelas, custos totais e o impacto de um lance.")
 

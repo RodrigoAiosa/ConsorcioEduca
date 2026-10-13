@@ -1,10 +1,12 @@
 import streamlit as st
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(
     page_title="Consórcio Educa | Simulador e Educação Financeira",
     page_icon="🧭",
     layout="wide",
 )
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 
 st.title("🧭 Consórcio Educa")
 st.subheader("Simulação e educação financeira para quem tem (ou pensa em ter) um consórcio")

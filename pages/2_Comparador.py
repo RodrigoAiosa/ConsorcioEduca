@@ -10,8 +10,10 @@ from utils.calculos import (
     ParametrosFinanciamento, simular_financiamento,
     simular_poupanca_programada,
 )
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(page_title="Comparador", page_icon="⚖️", layout="wide")
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 st.title("⚖️ Consórcio vs. Financiamento vs. Poupança Programada")
 st.write("Compare os três caminhos mais comuns para adquirir um bem de alto valor.")
 
