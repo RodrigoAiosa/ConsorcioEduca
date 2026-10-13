@@ -6,8 +6,10 @@ import streamlit as st
 import pandas as pd
 
 from utils.calculos import probabilidade_contemplacao_simples
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(page_title="Simulador de Contemplação", page_icon="🎯", layout="wide")
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 st.title("🎯 Simulador de Contemplação por Sorteio")
 st.write(
     "Entenda, de forma didática, como a chance de ser sorteado muda ao longo do grupo. "

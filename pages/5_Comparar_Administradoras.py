@@ -7,8 +7,10 @@ import streamlit as st
 import pandas as pd
 
 from utils.calculos import ParametrosConsorcio, parcela_consorcio_pre_contemplacao
+from esconder_selo import esconder_selo_streamlit
 
 st.set_page_config(page_title="Comparar Administradoras", page_icon="🏢", layout="wide")
+esconder_selo_streamlit()  # oculta os controles do Streamlit Cloud
 st.title("🏢 Comparar Administradoras (via CSV)")
 st.write(
     "Importe uma planilha com as condições de diferentes administradoras (ou simulações que "
