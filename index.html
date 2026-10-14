@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consórcio Educa | Simulador e Educação Financeira</title>
+<meta name="description" content="Simule seu consórcio, compare com financiamento e poupança, entenda a contemplação e os termos do setor — sem economês.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f3ec; --surface:#fffdf8; --ink:#14241f; --muted:#5b6b64; --line:#e3ddd0;
+  --brand:#0f5c4d; --brand-soft:#e2efe9; --accent:#e0a526; --accent-soft:#fbf0d6;
+  --danger:#b44a2c; --c1:#0f5c4d; --c2:#e0a526; --c3:#5470c6;
+  --radius:18px; --shadow:0 1px 2px rgba(20,36,31,.05),0 8px 30px rgba(20,36,31,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1714;--surface:#16211d;--ink:#eef3ef;--muted:#9fb0a8;--line:#26352f;
+    --brand:#5cc3a6;--brand-soft:#1b322b;--accent:#f0bd4f;--accent-soft:#33291a;
+    --danger:#ef8a6b;--c1:#5cc3a6;--c2:#f0bd4f;--c3:#8ea5f0;--shadow:none}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:700;line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+a{color:var(--brand)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
+.logo{font-family:Fraunces,serif;font-weight:700;font-size:1.2rem;text-decoration:none;color:var(--ink);display:flex;gap:8px;align-items:center;white-space:nowrap}
+nav.links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.links a{text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem;padding:8px 12px;border-radius:999px;white-space:nowrap}
+nav.links a:hover{background:var(--brand-soft);color:var(--brand)}
+@media (max-width:760px){nav.links{display:none}}
+
+/* hero */
+.hero{padding:72px 0 56px}
+.hero .eyebrow{display:inline-block;background:var(--accent-soft);color:var(--ink);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:20px}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--brand);background:linear-gradient(transparent 62%,var(--accent-soft) 62%)}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0 0 28px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:1.5px solid var(--brand);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--brand);color:var(--bg)}
+.btn.ghost{color:var(--brand)}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:48px}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-decoration:none;color:inherit;transition:border-color .2s}
+.feat:hover{border-color:var(--brand)}
+.feat b{display:block;margin:6px 0 2px}
+.feat span{color:var(--muted);font-size:.9rem}
+.feat .ic{font-size:1.4rem}
+
+/* sections */
+section.block{padding:64px 0;border-top:1px solid var(--line)}
+.sec-head{max-width:68ch;margin-bottom:28px}
+.sec-head h2{font-size:clamp(1.7rem,3.5vw,2.4rem)}
+.sec-head p{color:var(--muted);margin:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+.grid-sim{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+@media (max-width:900px){.grid-sim{grid-template-columns:1fr}}
+
+/* controls */
+.ctrl{margin-bottom:16px}
+.ctrl label{display:flex;justify-content:space-between;gap:8px;font-size:.88rem;font-weight:600;margin-bottom:6px}
+.ctrl label output{font-variant-numeric:tabular-nums;color:var(--brand);font-weight:700;white-space:nowrap}
+.ctrl small{display:block;color:var(--muted);font-size:.78rem;margin-top:4px;line-height:1.4}
+input[type=range]{width:100%;accent-color:var(--brand)}
+input[type=number],input[type=search]{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus{outline:2px solid var(--brand);outline-offset:1px}
+.group-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin:22px 0 12px;padding-top:16px;border-top:1px dashed var(--line)}
+.group-title:first-child{margin-top:0;padding-top:0;border:0}
+.check{display:flex;gap:8px;align-items:center;font-size:.9rem;font-weight:600;margin-bottom:12px;cursor:pointer}
+.check input{accent-color:var(--brand);width:18px;height:18px}
+
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.metric{background:var(--bg);border-radius:14px;padding:14px 16px}
+.metric .k{font-size:.78rem;color:var(--muted);font-weight:600}
+.metric .v{font-family:Fraunces,serif;font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.3}
+.metric.hl{background:var(--accent-soft)}
+.note{font-size:.88rem;color:var(--muted);margin:10px 0 0}
+.callout{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 12px 12px 0;font-size:.92rem;margin-top:16px}
+.callout.info{border-color:var(--brand);background:var(--brand-soft)}
+
+/* chart */
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font:11px Manrope,sans-serif}
+.chart .grid{stroke:var(--line)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:6px 0 2px}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.tabs{display:flex;gap:6px;margin:18px 0 10px}
+.tabs button{border:1.5px solid var(--line);background:transparent;color:var(--ink);padding:7px 14px;border-radius:999px;font:600 .85rem Manrope,sans-serif;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:var(--bg)}
+.table-wrap{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{position:sticky;top:0;background:var(--surface);font-weight:700}
+tr.jump td{background:var(--accent-soft)}
+
+/* comparador */
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.cmp{grid-template-columns:1fr}}
+.opt{border:1.5px solid var(--line);border-radius:16px;padding:18px;background:var(--bg);position:relative}
+.opt.best{border-color:var(--brand)}
+.opt .tag{position:absolute;top:-11px;right:14px;background:var(--brand);color:var(--bg);font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.opt h3{font-size:1.2rem}
+.opt dl{margin:0;display:grid;gap:8px}
+.opt dt{font-size:.78rem;color:var(--muted);font-weight:600}
+.opt dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.opt .when{font-size:.85rem;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.bars{margin-top:18px}
+.bar-row{display:grid;grid-template-columns:120px 1fr 120px;gap:10px;align-items:center;font-size:.85rem;margin-bottom:8px}
+.bar-row .track{height:14px;background:var(--bg);border-radius:999px;overflow:hidden}
+.bar-row .fill{height:100%;border-radius:999px;transition:width .3s}
+.bar-row .val{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+@media (max-width:560px){.bar-row{grid-template-columns:90px 1fr;}.bar-row .val{grid-column:2;text-align:left}}
+
+/* glossario */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 20px}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 14px;border-radius:999px;font:600 .85rem Manrope,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+details.term{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+details.term summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+details.term summary::-webkit-details-marker{display:none}
+details.term summary b{font-family:Fraunces,serif;font-size:1.08rem}
+details.term summary span{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+details.term p{font-size:.92rem;margin:12px 0 0}
+details.term .tip{background:var(--brand-soft);border-radius:10px;padding:10px 12px;font-size:.88rem;margin-top:10px}
+.empty{color:var(--muted);font-style:italic}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--muted);font-size:.9rem}
+footer .disclaimer{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#topo" class="logo"><span>🧭</span> Consórcio Educa</a>
+    <nav class="links" aria-label="Seções">
+      <a href="#simulador">Simulador</a>
+      <a href="#comparador">Comparador</a>
+      <a href="#contemplacao">Contemplação</a>
+      <a href="#glossario">Glossário</a>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Educação financeira · gratuito</span>
+      <h1>Entenda <em>quanto você paga de verdade</em> no seu consórcio</h1>
+      <p class="lead">A maioria das pessoas entra em um consórcio sem saber o custo total, como funciona a contemplação ou o que aconteceria se tivesse escolhido outro caminho. Simule, compare e aprenda — sem economês.</p>
+      <div class="btns">
+        <a class="btn primary" href="#simulador">Simular meu consórcio →</a>
+        <a class="btn ghost" href="#glossario">Ver glossário</a>
+      </div>
+      <div class="features">
+        <a class="feat" href="#simulador"><span class="ic">📊</span><b>Simulador</b><span>Parcela, CET, lance e reajuste anual (INCC/IPCA).</span></a>
+        <a class="feat" href="#comparador"><span class="ic">⚖️</span><b>Comparador</b><span>Consórcio × financiamento × poupança programada.</span></a>
+        <a class="feat" href="#contemplacao"><span class="ic">🎯</span><b>Contemplação</b><span>Como a chance de sorteio evolui no grupo.</span></a>
+        <a class="feat" href="#glossario"><span class="ic">📚</span><b>Glossário</b><span>Os termos do setor explicados com clareza.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULADOR -->
+  <section class="block" id="simulador">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>📊 Simulador de Consórcio</h2>
+        <p>Preencha os dados do plano para estimar parcelas, custos totais e o impacto de um lance.</p>
+      </div>
+      <div class="grid-sim">
+        <div class="card" id="sim-controls">
+          <div class="group-title">Parâmetros do plano</div>
+          <div class="ctrl"><label for="s-valor">Valor do bem (crédito)</label>
+            <input type="number" id="s-valor" min="1000" step="1000" value="100000"></div>
+          <div class="ctrl"><label for="s-prazo">Prazo <output for="s-prazo"></output></label>
+            <input type="range" id="s-prazo" min="12" max="240" step="6" value="120" data-fmt="meses"></div>
+          <div class="ctrl"><label for="s-adm">Taxa de administração total <output></output></label>
+            <input type="range" id="s-adm" min="0" max="30" step="0.5" value="18" data-fmt="pct">
+            <small>Percentual TOTAL cobrado ao longo do plano, não mensal.</small></div>
+          <div class="ctrl"><label for="s-fr">Fundo de reserva total <output></output></label>
+            <input type="range" id="s-fr" min="0" max="10" step="0.5" value="2" data-fmt="pct"></div>
+          <div class="ctrl"><label for="s-seg">Seguro prestamista (a.m. s/ saldo) <output></output></label>
+            <input type="range" id="s-seg" min="0" max="0.5" step="0.01" value="0.05" data-fmt="pct2"></div>
+
+          <div class="group-title">Lance (opcional)</div>
+          <div class="ctrl"><label for="s-lp">Lance próprio (do bolso) <output></output></label>
+            <input type="range" id="s-lp" min="0" max="50" step="1" value="0" data-fmt="pct"></div>
+          <div class="ctrl"><label for="s-le">Lance embutido (do crédito) <output></output></label>
+            <input type="range" id="s-le" min="0" max="30" step="1" value="0" data-fmt="pct"></div>
+
+          <div class="group-title">Reajuste anual (INCC/IPCA)</div>
+          <label class="check"><input type="checkbox" id="s-reaj"> Aplicar reajuste anual do bem</label>
+          <div class="ctrl"><label for="s-ind">Índice de reajuste anual <output></output></label>
+            <input type="range" id="s-ind" min="0" max="15" step="0.5" value="5" data-fmt="pct" disabled>
+            <small>Imóveis costumam usar o INCC; veículos e outros bens, o IPCA ou índice contratual.</small></div>
+        </div>
+
+        <div class="card">
+          <h3>Resumo do plano</h3>
+          <div class="metrics">
+            <div class="metric"><div class="k">Parcela base estimada</div><div class="v" id="m-base">–</div></div>
+            <div class="metric"><div class="k">Parcela + seguro (média)</div><div class="v" id="m-media">–</div></div>
+            <div class="metric"><div class="k">Custo total do plano</div><div class="v" id="m-total">–</div></div>
+            <div class="metric hl"><div class="k">Custo Efetivo Total (CET)</div><div class="v" id="m-cet">–</div></div>
+          </div>
+          <p class="note" id="m-comp"></p>
+
+          <div id="lance-box" hidden>
+            <h3 style="margin-top:22px">Impacto do lance</h3>
+            <div class="metrics">
+              <div class="metric"><div class="k">Lance próprio (desembolso)</div><div class="v" id="l-prop">–</div></div>
+              <div class="metric"><div class="k">Lance embutido (do crédito)</div><div class="v" id="l-emb">–</div></div>
+              <div class="metric hl"><div class="k">Crédito líquido após embutido</div><div class="v" id="l-liq">–</div></div>
+            </div>
+            <div class="callout">⚠️ O lance embutido reduz o crédito que você efetivamente recebe na contemplação, mesmo pagando as parcelas com base no valor cheio do bem.</div>
+          </div>
+
+          <h3 style="margin-top:26px">Evolução mês a mês</h3>
+          <p class="note" id="reaj-note" hidden></p>
+          <div class="tabs" role="tablist">
+            <button role="tab" aria-selected="true" data-tab="graf">📈 Gráfico</button>
+            <button role="tab" aria-selected="false" data-tab="tab">📋 Tabela</button>
+          </div>
+          <div id="pane-graf">
+            <div class="legend"><span><i style="background:var(--c1)"></i>Parcela total (eixo esq.)</span><span><i style="background:var(--c2)"></i>Saldo devedor estimado (eixo dir.)</span></div>
+            <svg class="chart" id="chart-sim" viewBox="0 0 720 300" role="img" aria-label="Gráfico da parcela e do saldo devedor ao longo do plano"></svg>
+          </div>
+          <div id="pane-tab" hidden><div class="table-wrap"><table id="tbl-sim"></table></div></div>
+          <div class="callout info">💡 O saldo devedor aqui é uma aproximação linear para fins didáticos. Diluições por desistências e regras de cada administradora também alteram esse valor.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARADOR -->
+  <section class="block" id="comparador">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>⚖️ Consórcio × Financiamento × Poupança</h2>
+        <p>Compare os três caminhos mais comuns para adquirir um bem de alto valor. Valor do bem, prazo e custos do consórcio vêm do simulador acima.</p>
+      </div>
+      <div class="grid-sim">
+        <div class="card">
+          <div class="group-title">Financiamento</div>
+          <div class="ctrl"><label for="c-ent">Entrada <output></output></label>
+            <input type="range" id="c-ent" min="0" max="50" step="1" value="20" data-fmt="pct"></div>
+          <div class="ctrl"><label for="c-jur">Juros (a.m.) <output></output></label>
+            <input type="range" id="c-jur" min="0" max="3" step="0.05" value="1.3" data-fmt="pct2"></div>
+          <div class="group-title">Poupança programada</div>
+          <div class="ctrl"><label for="c-rend">Rendimento (a.m.) <output></output></label>
+            <input type="range" id="c-rend" min="0" max="2" step="0.05" value="0.7" data-fmt="pct2">
+            <small>Ex.: 0,7% a.m. fica próximo de um investimento conservador atrelado ao CDI.</small></div>
+        </div>
+        <div class="card">
+          <div class="cmp" id="cmp-cards"></div>
+          <div class="bars" id="cmp-bars"></div>
+          <div class="callout info">💡 O consórcio não tem juros, mas tem taxa de administração e você só recebe o bem quando for contemplado. O financiamento entrega o bem na hora, ao custo dos juros. A poupança exige disciplina, mas os rendimentos trabalham a seu favor.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEMPLACAO -->
+  <section class="block" id="contemplacao">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>🎯 Simulador de Contemplação por Sorteio</h2>
+        <p>Veja, de forma didática, como a chance de ser sorteado muda ao longo do grupo. É uma estimativa simplificada para fins educativos, não a fórmula oficial de nenhuma administradora.</p>
+      </div>
+      <div class="grid-sim">
+        <div class="card">
+          <div class="ctrl"><label for="p-part">Participantes no grupo</label>
+            <input type="number" id="p-part" min="10" step="10" value="200"></div>
+          <div class="ctrl"><label for="p-cont">Contemplados por sorteio/mês</label>
+            <input type="number" id="p-cont" min="1" step="1" value="2"></div>
+          <div class="ctrl"><label for="p-prazo">Prazo do grupo <output></output></label>
+            <input type="range" id="p-prazo" min="12" max="240" step="6" value="120" data-fmt="meses"></div>
+          <div class="metrics" style="margin-top:20px;grid-template-columns:1fr">
+            <div class="metric hl"><div class="k">Chance acumulada em 12 meses</div><div class="v" id="p-12">–</div></div>
+            <div class="metric"><div class="k">Mês em que a chance passa de 50%</div><div class="v" id="p-50">–</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="legend"><span><i style="background:var(--c3)"></i>Prob. de sorteio neste mês (eixo esq.)</span><span><i style="background:var(--c1)"></i>Prob. acumulada (eixo dir.)</span></div>
+          <svg class="chart" id="chart-cont" viewBox="0 0 720 300" role="img" aria-label="Gráfico da probabilidade de contemplação ao longo do prazo"></svg>
+          <h3 style="margin-top:20px;font-size:1.15rem">🧠 O que isso significa na prática</h3>
+          <ul style="font-size:.92rem;padding-left:20px;margin:0">
+            <li>Quanto <b>mais participantes</b>, <b>menor</b> a chance individual de sorteio a cada mês.</li>
+            <li>Mais contemplações por mês aumentam a chance — mas isso costuma estar ligado ao tamanho das parcelas arrecadadas.</li>
+            <li>A <b>probabilidade acumulada</b> estima a chance de você já ter sido contemplado até aquele mês, assumindo sorteio puro.</li>
+            <li><b>Lances</b> mudam a dinâmica: competem numa “fila” separada do sorteio.</li>
+          </ul>
+          <div class="callout">⚠️ Grupos reais têm desistências, atrasos, entrada de novos participantes e regras próprias que alteram esses números.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOSSARIO -->
+  <section class="block" id="glossario">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>📚 Glossário de Consórcios</h2>
+        <p>Os termos que toda administradora usa — explicados sem economês.</p>
+      </div>
+      <input type="search" id="g-busca" placeholder="🔍 Buscar termo…" aria-label="Buscar termo" style="max-width:420px">
+      <div class="chips" id="g-chips"></div>
+      <div class="gloss" id="g-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="disclaimer">⚠️ <b>Aviso importante:</b> este projeto tem finalidade <b>educativa</b>. As fórmulas são simplificações didáticas baseadas em práticas comuns do mercado, mas cada administradora tem seu próprio regulamento. Sempre confira o contrato e o CET oficial antes de decidir. Este site não é consultoria financeira.</div>
+    <p>🧭 Consórcio Educa · Projeto open-source (MIT) · <a href="https://github.com/RodrigoAiosa/ConsorcioEduca" target="_blank" rel="noopener">Código no GitHub</a></p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  const num = (v, d = 2) => Number(v).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const R = (v) => brl.format(v);
+  const fmtOut = { meses: (v) => `${v} meses`, pct: (v) => `${num(v, 1)}%`, pct2: (v) => `${num(v, 2)}%` };
+  const val = (id) => parseFloat($(id).value) || 0;
+
+  /* ===== Motor de cálculo (port de utils/calculos.py) ===== */
+  function parcelaPre(p) {
+    const adm = p.valor * p.adm / 100, fr = p.valor * p.fr / 100;
+    const total = p.valor + adm + fr, base = total / p.prazo;
+    let saldo = p.valor, dec = p.valor / p.prazo, somaSeg = 0;
+    for (let i = 0; i < p.prazo; i++) { somaSeg += saldo * p.seg / 100; saldo -= dec; }
+    const segMed = somaSeg / p.prazo;
+    return { adm, fr, total, base, segMed, media: base + segMed, cet: (total - p.valor) / p.valor * 100 };
+  }
+  function fluxo(p) {
+    const base = parcelaPre(p).base, out = [];
+    let saldo = p.valor; const dec = p.valor / p.prazo;
+    for (let m = 1; m <= p.prazo; m++) {
+      const s = saldo * p.seg / 100;
+      out.push({ mes: m, base, seguro: s, total: base + s, saldo });
+      saldo -= dec;
+    }
+    return out;
+  }
+  function fluxoReajuste(p, indice, cada = 12) {
+    let restante = parcelaPre(p).total, saldo = p.valor, meses = p.prazo, bem = p.valor;
+    const f = 1 + indice / 100, out = [];
+    for (let m = 1; m <= p.prazo; m++) {
+      let salto = false;
+      if (indice > 0 && m > 1 && (m - 1) % cada === 0) { restante *= f; saldo *= f; bem *= f; salto = true; }
+      const base = meses > 0 ? restante / meses : 0, s = saldo * p.seg / 100;
+      out.push({ mes: m, bem, base, seguro: s, total: base + s, saldo, salto });
+      restante -= base; saldo -= meses > 0 ? saldo / meses : 0; meses--;
+    }
+    return out;
+  }
+  function financiamento(valor, entrada, n, jurosAm) {
+    const fin = valor * (1 - entrada / 100), i = jurosAm / 100;
+    const parc = i === 0 ? fin / n : fin * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+    const pago = parc * n, juros = pago - fin, ent = valor * entrada / 100;
+    return { fin, ent, parc, total: pago + ent, juros, cet: fin ? juros / fin * 100 : 0 };
+  }
+  function poupanca(valor, n, rendAm) {
+    const i = rendAm / 100;
+    const aporte = i === 0 ? valor / n : valor * i / (Math.pow(1 + i, n) - 1);
+    return { aporte, total: aporte * n, rend: valor - aporte * n };
+  }
+  function probContemplacao(part, cont, mes) {
+    const rest = Math.max(part - cont * (mes - 1), 1);
+    return { rest, mes: Math.min(cont / rest, 1), acum: Math.min(1 - Math.pow(1 - cont / part, mes), 1) };
+  }
+
+  /* ===== Gráfico SVG de dois eixos ===== */
+  function niceMax(v) { if (v <= 0) return 1; const e = Math.pow(10, Math.floor(Math.log10(v))); const f = v / e; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * e; }
+  function compact(v) { return Math.abs(v) >= 1e6 ? num(v / 1e6, 1) + " mi" : Math.abs(v) >= 1e3 ? num(v / 1e3, 0) + " mil" : num(v, v < 10 ? 1 : 0); }
+  function dualChart(svg, xs, a, b, fa, fb, ca, cb) {
+    const W = 720, H = 300, L = 62, Rt = 62, T = 14, B = 34, iw = W - L - Rt, ih = H - T - B;
+    const cap = (m, v) => (fa.pct && v <= 100 ? Math.min(m, 100) : m);
+    const ma = cap(niceMax(Math.max(...a) * 1.05), Math.max(...a)), mb = cap(niceMax(Math.max(...b) * 1.05), Math.max(...b));
+    const n = xs.length, x = (i) => L + (n > 1 ? i / (n - 1) : 0) * iw;
+    const ya = (v) => T + ih - v / ma * ih, yb = (v) => T + ih - v / mb * ih;
+    let g = "";
+    for (let k = 0; k <= 4; k++) {
+      const y = T + ih - k / 4 * ih;
+      g += `<line class="grid" x1="${L}" x2="${W - Rt}" y1="${y}" y2="${y}"/>`;
+      g += `<text x="${L - 8}" y="${y + 4}" text-anchor="end">${fa(ma * k / 4)}</text>`;
+      g += `<text x="${W - Rt + 8}" y="${y + 4}">${fb(mb * k / 4)}</text>`;
+    }
+    const step = Math.max(1, Math.ceil(n / 8 / 12) * 12);
+    for (let i = 0; i < n; i += step) g += `<text x="${x(i)}" y="${H - 12}" text-anchor="middle">${xs[i]}</text>`;
+    g += `<text x="${L + iw / 2}" y="${H}" text-anchor="middle">mês</text>`;
+    const path = (arr, y) => arr.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+    g += `<path d="${path(b, yb)}" fill="none" stroke="${cb}" stroke-width="2.2" stroke-linejoin="round"/>`;
+    g += `<path d="${path(a, ya)}" fill="none" stroke="${ca}" stroke-width="2.6" stroke-linejoin="round"/>`;
+    svg.innerHTML = g;
+  }
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  /* ===== Saídas dos sliders ===== */
+  document.querySelectorAll("input[type=range][data-fmt]").forEach((el) => {
+    const out = el.closest(".ctrl").querySelector("output");
+    const upd = () => { out.textContent = fmtOut[el.dataset.fmt](parseFloat(el.value)); };
+    el.addEventListener("input", upd); upd();
+  });
+
+  /* ===== Simulador ===== */
+  function params() {
+    return { valor: Math.max(val("#s-valor"), 1000), prazo: val("#s-prazo"), adm: val("#s-adm"), fr: val("#s-fr"), seg: val("#s-seg"), lp: val("#s-lp"), le: val("#s-le") };
+  }
+  function renderSim() {
+    const p = params(), r = parcelaPre(p);
+    $("#m-base").textContent = R(r.base);
+    $("#m-media").textContent = R(r.media);
+    $("#m-total").textContent = R(r.total);
+    $("#m-cet").textContent = num(r.cet) + "%";
+    $("#m-comp").textContent = `Composição dos custos: ${R(r.adm)} de taxa de administração + ${R(r.fr)} de fundo de reserva + seguro médio de ${R(r.segMed)}/mês.`;
+
+    const temLance = p.lp > 0 || p.le > 0;
+    $("#lance-box").hidden = !temLance;
+    if (temLance) {
+      const emb = p.valor * p.le / 100, prop = p.valor * p.lp / 100;
+      $("#l-prop").textContent = R(prop); $("#l-emb").textContent = R(emb); $("#l-liq").textContent = R(p.valor - emb);
+    }
+
+    const reaj = $("#s-reaj").checked, ind = val("#s-ind");
+    $("#s-ind").disabled = !reaj;
+    const usaReaj = reaj && ind > 0;
+    const f = usaReaj ? fluxoReajuste(p, ind) : fluxo(p);
+    const note = $("#reaj-note");
+    note.hidden = !usaReaj;
+    if (usaReaj) note.textContent = `📈 Reajuste de ${num(ind, 1)}% ao ano aplicado a cada 12 meses. Repare no “salto” da parcela nos meses 13, 25, 37…`;
+
+    dualChart($("#chart-sim"), f.map((d) => d.mes), f.map((d) => d.total), f.map((d) => d.saldo), compact, compact, css("--c1"), css("--c2"));
+
+    let h = `<thead><tr><th>Mês</th>${usaReaj ? "<th>Valor do bem</th>" : ""}<th>Parcela base</th><th>Seguro</th><th>Parcela total</th><th>Saldo devedor</th></tr></thead><tbody>`;
+    for (const d of f) h += `<tr${d.salto ? ' class="jump"' : ""}><td>${d.mes}</td>${usaReaj ? `<td>${R(d.bem)}</td>` : ""}<td>${R(d.base)}</td><td>${R(d.seguro)}</td><td>${R(d.total)}</td><td>${R(d.saldo)}</td></tr>`;
+    $("#tbl-sim").innerHTML = h + "</tbody>";
+
+    renderCmp(p, r);
+  }
+  document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".tabs button").forEach((x) => x.setAttribute("aria-selected", x === b));
+    $("#pane-graf").hidden = b.dataset.tab !== "graf";
+    $("#pane-tab").hidden = b.dataset.tab !== "tab";
+  }));
+  ["#s-valor", "#s-prazo", "#s-adm", "#s-fr", "#s-seg", "#s-lp", "#s-le", "#s-reaj", "#s-ind"].forEach((id) => $(id).addEventListener("input", renderSim));
+
+  /* ===== Comparador ===== */
+  function renderCmp(p, rc) {
+    p = p || params(); rc = rc || parcelaPre(p);
+    const fin = financiamento(p.valor, val("#c-ent"), p.prazo, val("#c-jur"));
+    const pou = poupanca(p.valor, p.prazo, val("#c-rend"));
+    const opts = [
+      { k: "c", nome: "🎯 Consórcio", parc: rc.media, total: rc.total, extra: `${num(rc.cet)}% sobre o bem`, cor: css("--c1"), quando: "Só após a contemplação (sorteio ou lance)." },
+      { k: "f", nome: "🏦 Financiamento", parc: fin.parc, total: fin.total, extra: `${R(fin.juros)} em juros (${num(fin.cet)}%)`, cor: css("--danger"), quando: `Imediatamente, com entrada de ${R(fin.ent)}.` },
+      { k: "p", nome: "💰 Poupança", parc: pou.aporte, total: pou.total, extra: `Rendimentos cobrem ${R(pou.rend)}`, cor: css("--c3"), quando: `Ao final do prazo (${p.prazo} meses).` },
+    ];
+    const min = Math.min(...opts.map((o) => o.total));
+    $("#cmp-cards").innerHTML = opts.map((o) => `<div class="opt${o.total === min ? " best" : ""}">${o.total === min ? '<span class="tag">Menor total pago</span>' : ""}<h3>${o.nome}</h3><dl><div><dt>Parcela / aporte mensal</dt><dd>${R(o.parc)}</dd></div><div><dt>Total desembolsado</dt><dd>${R(o.total)}</dd></div><div><dt>Custo ou ganho</dt><dd>${o.extra}</dd></div></dl><div class="when"><b>Quando recebe o bem:</b> ${o.quando}</div></div>`).join("");
+    const max = Math.max(...opts.map((o) => o.total));
+    $("#cmp-bars").innerHTML = `<div class="note" style="margin-bottom:10px;font-weight:600">Total desembolsado para um bem de ${R(p.valor)}</div>` +
+      opts.map((o) => `<div class="bar-row"><span>${o.nome.replace(/^\S+\s/, "")}</span><div class="track"><div class="fill" style="width:${o.total / max * 100}%;background:${o.cor}"></div></div><span class="val">${R(o.total)}</span></div>`).join("");
+  }
+  ["#c-ent", "#c-jur", "#c-rend"].forEach((id) => $(id).addEventListener("input", () => renderCmp()));
+
+  /* ===== Contemplação ===== */
+  function renderCont() {
+    const part = Math.max(val("#p-part"), 10), cont = Math.max(val("#p-cont"), 1), prazo = val("#p-prazo");
+    const rows = [];
+    for (let m = 1; m <= prazo; m++) rows.push(probContemplacao(part, cont, m));
+    const pctFmt = Object.assign((v) => num(v, v < 10 ? 1 : 0) + "%", { pct: true });
+    dualChart($("#chart-cont"), rows.map((_, i) => i + 1), rows.map((r) => r.mes * 100), rows.map((r) => r.acum * 100),
+      pctFmt, (v) => num(v, 0) + "%", css("--c3"), css("--c1"));
+    $("#p-12").textContent = num(probContemplacao(part, cont, Math.min(12, prazo)).acum * 100, 1) + "%";
+    const i50 = rows.findIndex((r) => r.acum >= 0.5);
+    $("#p-50").textContent = i50 >= 0 ? `Mês ${i50 + 1}` : "Não atinge no prazo";
+  }
+  ["#p-part", "#p-cont", "#p-prazo"].forEach((id) => $(id).addEventListener("input", renderCont));
+
+  /* ===== Glossário (port de utils/glossario.py) ===== */
+  const G = [
+    ["Taxa de Administração", "Custos", "É a remuneração que a administradora recebe para organizar o grupo, cobrar as parcelas, realizar assembleias e gerir os recursos. É expressa em % sobre o valor do bem e diluída ao longo de todo o prazo (embora algumas administradoras concentrem parte dela nas primeiras parcelas). Não é devolvida em caso de desistência.", "Compare sempre a taxa TOTAL do plano, não apenas a taxa mensal — administradoras podem apresentar os números de formas diferentes."],
+    ["Fundo de Reserva", "Custos", "Um percentual adicional cobrado para formar um 'colchão' financeiro do grupo, usado para cobrir inadimplência de outros participantes ou custos extras. Parte dele pode ser devolvida ao final do grupo, se sobrar saldo — mas isso não é garantido e depende do regulamento.", "Pergunte explicitamente se há previsão de devolução de fundo de reserva no contrato."],
+    ["Contemplação", "Funcionamento", "É o momento em que o participante recebe a carta de crédito para usar na compra do bem. Acontece por SORTEIO (mensal, entre todos os cotistas em dia) ou por LANCE (oferta de valor antecipado; quem oferece mais — ou atende a critérios do grupo — é contemplado).", "Ser sorteado não depende de pagar mais: todo participante em dia concorre igualmente ao sorteio."],
+    ["Lance Livre", "Estratégia de Contemplação", "Oferta de um valor em dinheiro, do próprio bolso do participante, para tentar antecipar a contemplação. Quem oferece o maior percentual sobre o valor do bem (ou crédito) geralmente tem prioridade, dependendo das regras do grupo.", "Um lance alto pode contemplar rápido, mas compromete uma reserva financeira que poderia ser usada de outra forma."],
+    ["Lance Embutido", "Estratégia de Contemplação", "Uma parte do PRÓPRIO crédito do consórcio é usada como lance. O participante não precisa desembolsar dinheiro extra, mas recebe um crédito líquido menor do que o valor contratado ao ser contemplado.", "Muito usado por quem não tem reserva extra, mas reduz o valor final disponível para a compra do bem."],
+    ["Saldo Devedor", "Funcionamento", "É o valor que ainda falta pagar ao grupo depois da contemplação. Mesmo tendo recebido a carta de crédito, o participante continua pagando as parcelas mensais até o fim do prazo.", "Contemplação não é 'quitação' — é apenas a liberação do crédito; as parcelas continuam."],
+    ["Seguro Prestamista", "Custos", "Seguro (geralmente obrigatório) que quita o saldo devedor do consórcio em caso de morte ou invalidez do participante, protegendo os dependentes de terem que assumir a dívida.", "O custo do seguro normalmente diminui ao longo do plano, pois incide sobre o saldo devedor."],
+    ["Diluição de Parcela", "Funcionamento", "Quando novos participantes entram no grupo (recompra de cotas desistentes) ou o grupo é reequilibrado, o valor das parcelas restantes pode ser recalculado e reduzido para os participantes ainda ativos.", "Não é garantido — depende de haver desistências e da política de reposição do grupo."],
+    ["Assembleia de Contemplação", "Funcionamento", "Reunião, geralmente mensal, onde ocorrem o sorteio e a apuração de lances. É nela que se define quem será contemplado naquele mês.", "Acompanhe as atas — administradoras sérias publicam os resultados de forma transparente."],
+    ["CET — Custo Efetivo Total", "Custos", "Soma de todos os custos do consórcio (taxa de administração + fundo de reserva + seguro) expressos como percentual sobre o valor do bem. É o número mais justo para comparar consórcios entre si ou consórcio vs. financiamento.", "Sempre peça o CET total do plano antes de assinar — não confie apenas na 'taxa de administração'."],
+    ["Grupo e Cota", "Funcionamento", "O 'grupo' é o conjunto de participantes que juntam recursos para contemplar uns aos outros ao longo do tempo. 'Cota' é a participação individual de cada consorciado dentro desse grupo.", "Grupos maiores tendem a ter mais sorteios por mês, mas também mais concorrência total."],
+  ].map(([termo, categoria, explicacao, dica]) => ({ termo, categoria, explicacao, dica }));
+  const cats = [...new Set(G.map((g) => g.categoria))].sort();
+  const ativos = new Set(cats);
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  $("#g-chips").innerHTML = cats.map((c) => `<button class="chip" aria-pressed="true" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+  $("#g-chips").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    const c = b.dataset.cat;
+    ativos.has(c) ? ativos.delete(c) : ativos.add(c);
+    b.setAttribute("aria-pressed", ativos.has(c)); renderGloss();
+  });
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  function renderGloss() {
+    const q = norm($("#g-busca").value.trim());
+    const itens = G.filter((g) => ativos.has(g.categoria) && (!q || norm(g.termo).includes(q)));
+    $("#g-list").innerHTML = itens.length ? itens.map((g) => `<details class="term"><summary><b>${esc(g.termo)}</b><span>${esc(g.categoria)}</span></summary><p>${esc(g.explicacao)}</p><div class="tip">💡 <b>Dica prática:</b> ${esc(g.dica)}</div></details>`).join("")
+      : `<p class="empty">Nenhum termo encontrado com esse filtro/busca.</p>`;
+  }
+  $("#g-busca").addEventListener("input", renderGloss);
+
+  renderSim(); renderCont(); renderGloss();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { renderSim(); renderCont(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Deploy estático no Vercel: publica só o index.html
+# (o app Streamlit em Python roda no Streamlit Cloud)
+*.py
+pages/
+utils/
+.streamlit/
+requirements.txt
